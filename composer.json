@@ -10,7 +10,7 @@
         "twig/twig": "~1.15",
         "symfony/twig-bridge": "~2.4",
         "igorw/config-service-provider": "~1.2",
-        "marmelab/phpcr-api-silex-provider": "2.0.*",
+        "marmelab/phpcr-api-silex-provider": "dev-master",
         "jackalope/jackalope-jackrabbit": "1.1.*"
     },
     "require-dev": {
@@ -26,5 +26,11 @@
         "branch-alias": {
             "dev-master": "1.2-dev"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:20minutes/phpcr-api-silex-provider.git"
+        }
+    ]
 }
