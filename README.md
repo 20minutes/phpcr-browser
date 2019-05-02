@@ -29,7 +29,7 @@ PHPCR Browser uses [Composer](https://getcomposer.org/) and [Bower](http://bower
 
 #### 1. Clone the repository
 ```sh
-git clone git@github.com:marmelab/phpcr-browser.git
+git clone git@github.com:20minutes/phpcr-browser.git
 cd phpcr-browser
 ```
 
@@ -37,66 +37,63 @@ cd phpcr-browser
 To install the web application with the default configuration (see below), run the following command:
 
 ```sh
-make install
+composer install
 ```
-
-This will download all dependencies and do the [Configuration](#configuration) part for you. If you prefer do it on your own run:
 
 ```sh
-make install autoconfig=false
+bower install
 ```
+
+If a `bower EINVRES` error appears, try:
+
+```sh
+npm i -g bower
+```
+
+We recommend to install it **globally**:
+
+```sh
+sudo npm i -g bower
+```
+
+Than try again:
+
+```sh
+bower install
+```
+
 ---
-#### Adding support for Jackalope Doctrine DBAL (Optionnal)
-By default, the Jackalope Doctrine DBAL is not installed. If you want to use it run the following commands:
-
-```sh
-composer require jackalope/jackalope-doctrine-dbal:1.1.* --no-update
-composer update jackalope/jackalope-doctrine-dbal
-```
-
-And update your configuration file to add your Doctrine repository by writing something equivalent to:
-
-```yml
-'My Doctrine DBAL Repository':
-        factory: jackalope.doctrine-dbal
-        parameters:
-            doctrine_dbal.config:
-                driver: pdo_sqlite
-                path: ../src/app.db
-            credentials.username: admin
-            credentials.password: admin
-```
-
-For more details on `doctrine_dbal.config` see [Doctrine website](http://doctrine-dbal.readthedocs.org/en/latest/reference/configuration.html).
-
-You can also find this config into `config/prod-with-dbal.yml.dist`
-
-Note you can install and use both Jackalope Jackrabbit and Doctrine DBAL at the same time.
-
-You can add as many repositories as you want into your config file.
-
 Configuration
 -------------
-Create a `config/prod.yml` with the connection settings for the repositories you need to browse. For instance, to use the browser with a local instance of Jackalope Jackrabbit:
+Create a `config/prod.yml` with the connection settings for the repositories you need to browse:
 
 ```yml
 phpcr_repositories:
-    'My Jackrabbit Repository':
+    'Local Repository':
         factory: jackalope.jackrabbit
         parameters:
             jackalope.jackrabbit_uri: 'http://localhost:8080/server'
             credentials.username: admin
             credentials.password: admin
+
+    'Prod Repository':
+        factory: jackalope.jackrabbit
+        parameters:
+            jackalope.jackrabbit_uri: 'http://localhost:8088/jackrabbit/server'
+            credentials.username: admin
+            credentials.password: admin
 ```
-
-The `factory` setting is the type of PHPCR repository you want to browse. See available factories in [marmelab/phpcr-api/config/factories.yml](https://github.com/marmelab/phpcr-api/blob/master/config/factories.yml).
-
-You can also copy the `config/prod.yml-dist` file as `config/prod.yml` to get this exact configuration.
-
-For using Jackalope Doctrine DBAL refer to [Installation](#installation).
 
 Usage
 -----
+
+#### SSH Tunnel
+
+Open an SSH tunnel to JCR:
+
+```
+ssh -L 8088:jackrabbit.20mn.net:8080 deploy@deploy-01
+```
 
 #### Using Apache VirtualHost
 
@@ -104,38 +101,28 @@ Add a VirtualHost to your Apache config (and add in it 'AllowEncodedSlashes On')
 
 ```
 <VirtualHost *:80>
-  DocumentRoot /path/to/the/browser/web
-  ServerName phpcr-browser.lo
-  AllowEncodedSlashes On
-  
-  <Directory "/path/to/the/browser/web">
-    AllowOverride All
-  </Directory>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /home/<you>/phpcr-browser/web
+    ServerName phpcr-browser
+    AllowEncodedSlashes On
+
+    <Directory /home/<you>/phpcr-browser/web>
+        DirectoryIndex index.html index.php
+        Options FollowSymLinks
+        AllowOverride All
+        Require All Granted
+    </Directory>
 </VirtualHost>
 ```
 And update your `/etc/hosts` file by adding:
 
 ```
-127.0.0.1   phpcr-browser.lo
+127.0.0.1   phpcr-browser
 ```
 
 You can now access to the browser on `http://phpcr-browser.lo` (or equivalent domain as configured in your virtual host and hosts file).
 
-#### Using PHP 5.4 integrated webserver
-
-You can also use PHP 5.4 integrated webserver by calling:
-
-```sh
-$ php -S localhost:8000 -t web
-```
-
-Alternatively call:
-
-```sh
-$ bin/run.sh
-```
-
-You can now access the repository by browsing to http://localhost:8000/browser.
+You can now access the repository by browsing to http://phpcr-browser/browser/#/.
 
 Tests
 -----
