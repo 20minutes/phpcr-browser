@@ -120,8 +120,6 @@ And update your `/etc/hosts` file by adding:
 127.0.0.1   phpcr-browser
 ```
 
-You can now access to the browser on `http://phpcr-browser.lo` (or equivalent domain as configured in your virtual host and hosts file).
-
 You can now access the repository by browsing to http://phpcr-browser/browser/#/.
 
 Tests
