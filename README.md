@@ -40,6 +40,14 @@ To install the web application with the default configuration (see below), run t
 composer install
 ```
 
+Ensure you use the correct node version (using [nvm](https://github.com/nvm-sh/nvm)):
+
+```sh
+nvm install 0.10
+```
+
+Then:
+
 ```sh
 bower install
 ```
@@ -50,13 +58,7 @@ If a `bower EINVRES` error appears, try:
 npm i -g bower
 ```
 
-We recommend to install it **globally**:
-
-```sh
-sudo npm i -g bower
-```
-
-Than try again:
+Then try again:
 
 ```sh
 bower install
