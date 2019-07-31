@@ -33,7 +33,7 @@ git clone git@github.com:20minutes/phpcr-browser.git
 cd phpcr-browser
 ```
 
-#### 2. Install dependencies and configure the browser
+#### 2. Install dependencies
 To install the web application with the default configuration (see below), run the following command:
 
 ```sh
@@ -43,7 +43,7 @@ composer install
 Ensure you use the correct node version (using [nvm](https://github.com/nvm-sh/nvm)):
 
 ```sh
-nvm install 0.10
+nvm install
 ```
 
 Then:
@@ -52,7 +52,7 @@ Then:
 bower install
 ```
 
-If a `bower EINVRES` error appears, try:
+If a `bower EINVRES` error appears or bower isn't installed, try:
 
 ```sh
 npm i -g bower
